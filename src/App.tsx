@@ -63,6 +63,12 @@ function App() {
     }
   };
 
+  const handleShareOnX = () => {
+    const text = encodeURIComponent('私を作ったLoLチャンプ9体を選びました！\nhttps://ninelolchamps.pages.dev/\n#私を作ったLoLチャンプ9体 #LoL\n');
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleReset = () => {
     if (confirm('すべてリセットしますか？')) {
       setSelectedChampions(Array(9).fill(null));
@@ -102,23 +108,42 @@ function App() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-4 w-full">
-            <button
-              onClick={handleDownload}
-              disabled={!isComplete}
-              className={`btn-primary text-lg px-8 py-3 ${!isComplete ? 'opacity-50 cursor-not-allowed saturate-0' : 'animate-pulse'}`}
-            >
-              <Download size={24} />
-              {isComplete ? '画像を保存する' : '9体すべて選んでください'}
-            </button>
+          <div className="flex flex-col items-center gap-2 mt-4 w-full">
+            <div className="flex flex-wrap items-center justify-center gap-4 w-full">
+              <button
+                onClick={handleDownload}
+                disabled={!isComplete}
+                className={`btn-primary text-lg px-8 py-3 ${!isComplete ? 'opacity-50 cursor-not-allowed saturate-0' : 'hover:animate-none'}`}
+              >
+                <Download size={24} />
+                {isComplete ? '画像を保存する' : '9体すべて選んでください'}
+              </button>
 
-            <button
-              onClick={handleReset}
-              className="btn-secondary"
-              title="リセット"
-            >
-              <RefreshCw size={20} />
-            </button>
+              {isComplete && (
+                <button
+                  onClick={handleShareOnX}
+                  className="bg-black hover:bg-neutral-800 border border-slate-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 shadow-lg active:scale-95 flex items-center justify-center gap-2"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.005 4.150h-1.91z" />
+                  </svg>
+                  Xでシェア
+                </button>
+              )}
+
+              <button
+                onClick={handleReset}
+                className="btn-secondary py-3 px-4"
+                title="リセット"
+              >
+                <RefreshCw size={24} />
+              </button>
+            </div>
+            {isComplete && (
+              <p className="text-slate-400 text-sm mt-2">
+                ※Xでシェアする際は、先に画像を保存してからポストに手動で添付してください。
+              </p>
+            )}
           </div>
         </main>
 
